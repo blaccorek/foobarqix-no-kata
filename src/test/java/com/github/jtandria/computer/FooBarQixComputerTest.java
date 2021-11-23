@@ -45,6 +45,19 @@ public class FooBarQixComputerTest {
         });
     }
 
+    @Test
+    void testDivisionRuleFailure() {
+
+        final FooBarQixComputer computer = new FooBarQixComputer();
+        final Random rnd = new Random();
+
+        WrongFormatException thrown = Assertions.assertThrows(WrongFormatException.class, () -> {
+            computer.computeDivisibleRule(rnd.nextInt(), "Not-returned", "not a number");
+        }, "WrongFormatException was expected");
+
+        Assertions.assertEquals("Input has wrong format", thrown.getMessage());
+    }
+
     @ParameterizedTest
     @CsvSource({ "1, 1", "2, 2", "3, FooFoo", "4, 4", "5, BarBar", "6, Foo", "7, QixQix", "8, 8", "9, Foo", "10, Bar",
             "13, Foo", "15, FooBarBar", "21, FooQix", "33, FooFooFoo", "51, FooBar", "53, BarFoo" })
