@@ -1,11 +1,28 @@
 package com.github.jtandria.computer;
 
 import com.github.jtandria.computer.exception.WrongFormatException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author jtandria
  */
 public class FooBarQixComputer implements IComputer {
+
+    private static final Logger LOGGER = Logger.getLogger(FooBarQixComputer.class.getName());
+
+    private static final int FOO_DIVISOR = 3;
+    private static final int BAR_DIVISOR = 5;
+    private static final int QIX_DIVISOR = 7;
+
+    private final Map<Integer, String> divisionRulesMap = new HashMap<Integer, String>() {
+        {
+            put(FOO_DIVISOR, "Foo");
+            put(BAR_DIVISOR, "Bar");
+            put(QIX_DIVISOR, "Qix");
+        }
+    };
 
     /**
      * Convert input to given string if divisible by a given number.
@@ -45,8 +62,19 @@ public class FooBarQixComputer implements IComputer {
      */
     @Override
     public String compute(String toCompute) {
-        // TODO Auto-generated method stub
-        return null;
+        StringBuilder resultBuilder = new StringBuilder();
+
+        divisionRulesMap.forEach((number, result) -> {
+            try {
+                resultBuilder.append(computeDivisibleRule(number, result, toCompute));
+            } catch (WrongFormatException e) {
+                LOGGER.severe("toCompute is not a number");
+            }
+        });
+        if (resultBuilder.length() == 0) {
+            return toCompute;
+        }
+        return resultBuilder.toString();
     }
 
 }
