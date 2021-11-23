@@ -38,7 +38,8 @@ public class FooBarQixComputerTest {
             try {
                 final String result = computer.computeDivisibleRule(divisionRule, convertString, input);
                 Assertions.assertEquals(convertString, result,
-                        String.format("Foo rule does not work for number %d", randomDisibleNumber));
+                        String.format("Division rule does not work for number %d with divisor %d", randomDisibleNumber,
+                                divisionRule));
             } catch (WrongFormatException e) {
                 Assertions.fail("Exception received");
             }
