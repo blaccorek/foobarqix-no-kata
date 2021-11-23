@@ -20,6 +20,20 @@ public class FooBarQixComputerTest {
 
     @ParameterizedTest
     @CsvSource({ "3, Foo", "5, Bar", "7, Qix" })
+    void testMatchRuleSuccess(ArgumentsAccessor arguments) {
+        final char character = arguments.getCharacter(0);
+        final char input = arguments.getCharacter(0);
+        final String convertString = arguments.getString(1);
+
+        final FooBarQixComputer computer = new FooBarQixComputer();
+
+        final String result = computer.computeMatchCharacterRule(character, convertString, input);
+        Assertions.assertEquals(convertString, result,
+                String.format("Match chartacter rule does not work for number %c", character));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "3, Foo", "5, Bar", "7, Qix" })
     void testDivisionRuleSuccess(ArgumentsAccessor arguments) {
         final int divisionRule = arguments.getInteger(0);
         final String convertString = arguments.getString(1);

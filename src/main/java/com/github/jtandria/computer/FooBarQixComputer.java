@@ -16,7 +16,7 @@ public class FooBarQixComputer implements IComputer {
     private static final int BAR_DIVISOR = 5;
     private static final int QIX_DIVISOR = 7;
 
-    private final Map<Integer, String> divisionRulesMap = new HashMap<Integer, String>() {
+    private final Map<Integer, String> rulesMap = new HashMap<Integer, String>() {
         {
             put(FOO_DIVISOR, "Foo");
             put(BAR_DIVISOR, "Bar");
@@ -46,6 +46,17 @@ public class FooBarQixComputer implements IComputer {
     }
 
     /**
+     * Convert input to given string if it match the given character.
+     *
+     * @param character     the character to match
+     * @param convertString the returned string if match
+     * @param input         the input used
+     */
+    public String computeMatchCharacterRule(int character, String convertString, char input) {
+        return character == input ? convertString : "";
+    }
+
+    /**
      * Parse the string inputed as argument and convert it according to the
      * following rules :
      * <p>
@@ -64,7 +75,7 @@ public class FooBarQixComputer implements IComputer {
     public String compute(String toCompute) {
         StringBuilder resultBuilder = new StringBuilder();
 
-        divisionRulesMap.forEach((number, result) -> {
+        rulesMap.forEach((number, result) -> {
             try {
                 resultBuilder.append(computeDivisibleRule(number, result, toCompute));
             } catch (WrongFormatException e) {
