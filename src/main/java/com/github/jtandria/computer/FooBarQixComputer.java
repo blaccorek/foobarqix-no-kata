@@ -1,6 +1,8 @@
 package com.github.jtandria.computer;
 
 import com.github.jtandria.computer.exception.WrongFormatException;
+
+import java.lang.module.ModuleDescriptor.Builder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -12,15 +14,11 @@ public class FooBarQixComputer implements IComputer {
 
     private static final Logger LOGGER = Logger.getLogger(FooBarQixComputer.class.getName());
 
-    private static final int FOO_DIVISOR = 3;
-    private static final int BAR_DIVISOR = 5;
-    private static final int QIX_DIVISOR = 7;
-
-    private final Map<Integer, String> rulesMap = new HashMap<Integer, String>() {
+    private final Map<String, String> rulesMap = new HashMap<String, String>() {
         {
-            put(FOO_DIVISOR, "Foo");
-            put(BAR_DIVISOR, "Bar");
-            put(QIX_DIVISOR, "Qix");
+            put("3", "Foo");
+            put("5", "Bar");
+            put("7", "Qix");
         }
     };
 
@@ -75,13 +73,19 @@ public class FooBarQixComputer implements IComputer {
     public String compute(String toCompute) {
         StringBuilder resultBuilder = new StringBuilder();
 
-        rulesMap.forEach((number, result) -> {
+        rulesMap.forEach((key, result) -> {
             try {
+                final int number = Integer.parseInt(key);
                 resultBuilder.append(computeDivisibleRule(number, result, toCompute));
             } catch (WrongFormatException e) {
                 LOGGER.severe("toCompute is not a number");
             }
         });
+        for (char c : toCompute.toCharArray()) {
+            rulesMap.forEach((key, result) -> {
+                resultBuilder.append(computeMatchCharacterRule(key.charAt(0), result, c));
+            });
+        }
         if (resultBuilder.length() == 0) {
             return toCompute;
         }
