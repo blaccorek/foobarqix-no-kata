@@ -1,5 +1,7 @@
 package com.github.jtandria.computer;
 
+import com.github.jtandria.computer.exception.WrongFormatException;
+
 /**
  * @author jtandria
  */
@@ -12,10 +14,18 @@ public class FooBarQixComputer implements IComputer {
      * @param result the returned string if divisible
      * @param input  the input used as the dividend
      * @return Given string else an empty string
+     * @throws WrongFormatException
      */
-    public String computeDivisibleRule(int number, String result, String input) {
-        // TODO
-        return null;
+    public String computeDivisibleRule(int number, String result, String input) throws WrongFormatException {
+        try {
+            long dividend = Long.parseLong(input);
+            if (dividend < 0) {
+                dividend = -dividend;
+            }
+            return (dividend % number) == 0 ? result : "";
+        } catch (NumberFormatException e) {
+            throw new WrongFormatException("Input has wrong format", e);
+        }
     }
 
     /**

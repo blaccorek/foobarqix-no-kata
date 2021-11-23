@@ -1,6 +1,8 @@
 package com.github.jtandria.computer;
 
+import com.github.jtandria.computer.exception.WrongFormatException;
 import java.util.Random;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.junit.jupiter.params.provider.CsvSource;
  * @author jtandria
  */
 public class FooBarQixComputerTest {
+    static final Logger LOGGER = Logger.getLogger(FooBarQixComputerTest.class.getName());
 
     @Test
     void testFooDivisionRuleSuccess() {
@@ -25,11 +28,17 @@ public class FooBarQixComputerTest {
         final Random rnd = new Random();
 
         IntStream.range(rangeStart, rangeEnd).forEach(n -> {
-            final int randomDisibleNumber = divisionRule * rnd.nextInt();
-            final String input = Integer.toString(randomDisibleNumber);
-            final String result = computer.computeDivisibleRule(divisionRule, "Foo", input);
-            Assertions.assertEquals("Foo", result,
-                    String.format("Foo rule does not work for number %d", randomDisibleNumber));
+            final int randomNumber = rnd.nextInt();
+            LOGGER.info(String.format("Random number is %d", randomNumber));
+            final long randomDisibleNumber = (long) divisionRule * randomNumber;
+            final String input = Long.toString(randomDisibleNumber);
+            try {
+                final String result = computer.computeDivisibleRule(divisionRule, "Foo", input);
+                Assertions.assertEquals("Foo", result,
+                        String.format("Foo rule does not work for number %d", randomDisibleNumber));
+            } catch (WrongFormatException e) {
+                Assertions.fail("Exception received");
+            }
         });
     }
 
