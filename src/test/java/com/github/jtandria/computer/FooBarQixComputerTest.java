@@ -18,9 +18,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 public class FooBarQixComputerTest {
     static final Logger LOGGER = Logger.getLogger(FooBarQixComputerTest.class.getName());
 
-    @Test
-    void testFooDivisionRuleSuccess() {
-        final int divisionRule = 3;
+    @ParameterizedTest
+    @CsvSource({ "3, Foo", "5, Bar", "7, Qix" })
+    void testDivisionRuleSuccess(ArgumentsAccessor arguments) {
+        final int divisionRule = arguments.getInteger(0);
+        final String convertString = arguments.getString(1);
+
         final int rangeStart = 1;
         final int rangeEnd = 1000;
 
@@ -33,8 +36,8 @@ public class FooBarQixComputerTest {
             final long randomDisibleNumber = (long) divisionRule * randomNumber;
             final String input = Long.toString(randomDisibleNumber);
             try {
-                final String result = computer.computeDivisibleRule(divisionRule, "Foo", input);
-                Assertions.assertEquals("Foo", result,
+                final String result = computer.computeDivisibleRule(divisionRule, convertString, input);
+                Assertions.assertEquals(convertString, result,
                         String.format("Foo rule does not work for number %d", randomDisibleNumber));
             } catch (WrongFormatException e) {
                 Assertions.fail("Exception received");
