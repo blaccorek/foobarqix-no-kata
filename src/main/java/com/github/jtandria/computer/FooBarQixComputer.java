@@ -12,7 +12,7 @@ public class FooBarQixComputer implements IComputer {
 
     private static final Logger LOGGER = Logger.getLogger(FooBarQixComputer.class.getName());
 
-    private final Map<String, String> rulesMap = new HashMap<String, String>() {
+    private final Map<String, String> divisionRuleMap = new HashMap<String, String>() {
         {
             put("3", "Foo");
             put("5", "Bar");
@@ -70,24 +70,32 @@ public class FooBarQixComputer implements IComputer {
     @Override
     public String compute(String toCompute) {
         StringBuilder resultBuilder = new StringBuilder();
+        String result;
 
-        rulesMap.forEach((key, result) -> {
+        divisionRuleMap.forEach((key, translation) -> {
             try {
                 final int number = Integer.parseInt(key);
-                resultBuilder.append(computeDivisibleRule(number, result, toCompute));
+                if (number != 0) {
+                    resultBuilder.append(computeDivisibleRule(number, translation, toCompute));
+                }
             } catch (WrongFormatException e) {
                 LOGGER.severe("toCompute is not a number");
             }
         });
-        for (char c : toCompute.toCharArray()) {
-            rulesMap.forEach((key, result) -> {
-                resultBuilder.append(computeMatchCharacterRule(key.charAt(0), result, c));
-            });
+        result = toCompute.replace('0', ' ');
+        for (char c : result.toCharArray()) {
+            if (c == ' ') {
+                resultBuilder.append(c);
+            } else {
+                divisionRuleMap.forEach((key, translation) -> {
+                    resultBuilder.append(computeMatchCharacterRule(key.charAt(0), translation, c));
+                });
+            }
         }
-        if (resultBuilder.length() == 0) {
-            return toCompute;
+        if (resultBuilder.toString().strip().length() > 0) {
+            result = resultBuilder.toString();
         }
-        return resultBuilder.toString();
+        return result.replace(' ', '*');
     }
 
 }
