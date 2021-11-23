@@ -15,6 +15,24 @@ import org.junit.jupiter.params.provider.CsvSource;
  */
 public class FooBarQixComputerTest {
 
+    @Test
+    void testFooDivisionRuleSuccess() {
+        final int divisionRule = 3;
+        final int rangeStart = 1;
+        final int rangeEnd = 1000;
+
+        final FooBarQixComputer computer = new FooBarQixComputer();
+        final Random rnd = new Random();
+
+        IntStream.range(rangeStart, rangeEnd).forEach(n -> {
+            final int randomDisibleNumber = divisionRule * rnd.nextInt();
+            final String input = Integer.toString(randomDisibleNumber);
+            final String result = computer.computeDivisibleRule(divisionRule, "Foo", input);
+            Assertions.assertEquals("Foo", result,
+                    String.format("Foo rule does not work for number %d", randomDisibleNumber));
+        });
+    }
+
     @ParameterizedTest
     @CsvSource({ "1, 1", "2, 2", "3, FooFoo", "4, 4", "5, BarBar", "6, Foo", "7, QixQix", "8, 8", "9, Foo", "10, Bar",
             "13, Foo", "15, FooBarBar", "21, FooQix", "33, FooFooFoo", "51, FooBar", "53, BarFoo" })

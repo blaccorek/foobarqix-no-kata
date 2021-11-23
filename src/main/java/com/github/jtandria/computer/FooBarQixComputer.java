@@ -6,6 +6,19 @@ package com.github.jtandria.computer;
 public class FooBarQixComputer implements IComputer {
 
     /**
+     * Convert input to given string if divisible by a given number.
+     *
+     * @param number the divisor
+     * @param result the returned string if divisible
+     * @param input  the input used as the dividend
+     * @return Given string else an empty string
+     */
+    public String computeDivisibleRule(int number, String result, String input) {
+        // TODO
+        return null;
+    }
+
+    /**
      * Parse the string inputed as argument and convert it according to the
      * following rules :
      * <p>
